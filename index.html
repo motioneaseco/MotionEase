@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motion Ease Co. | Cozy Glide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,700;1,900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL & SMOOTH SCROLLING --- */
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: #1a1a1a; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* Shared Button Style */
+        .btn-yellow {
+            display: inline-block; background: linear-gradient(180deg, #fae383 0%, #d9b846 100%);
+            border: 4px solid #fff5c2; border-radius: 40px; padding: 12px 35px;
+            font-weight: 700; font-size: 16px; letter-spacing: 1px; color: #000;
+            cursor: pointer; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease;
+        }
+        .btn-yellow:hover { transform: scale(1.05); }
+
+        /* --- HEADER / NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between;
+            align-items: center; padding: 30px 60px; z-index: 100;
+            background: linear-gradient(180deg, rgba(210,235,251,0.95) 0%, rgba(210,235,251,0) 100%);
+        }
+        .nav-links { display: flex; gap: 30px; font-size: 14px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-brand { font-size: 32px; font-weight: 600; letter-spacing: -0.5px; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .nav-icons svg { width: 24px; height: 24px; cursor: pointer; transition: stroke 0.2s; }
+        .nav-icons svg:hover { stroke: #e55a8f; }
+        
+        /* Cart Badge Styles */
+        .cart-container { position: relative; display: inline-block; cursor: pointer; }
+        .cart-badge {
+            position: absolute; top: -8px; right: -8px; background-color: #e55a8f; color: white;
+            border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;
+        }
+
+        /* --- PAGE 1: HERO SECTION --- */
+        #hero {
+            background: linear-gradient(180deg, #d2ebfb 0%, #a2d6b3 100%); min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding-top: 100px; position: relative; text-align: center;
+        }
+        
+        .hero-title { 
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 6.5rem; 
+            font-weight: 900; 
+            font-style: italic; 
+            color: #f26284; 
+            letter-spacing: 2px; 
+            margin-bottom: 30px; 
+            text-align: center; 
+            width: 100%;
+            position: relative;
+            z-index: 2; 
+        }
+        
+        .hero-images { 
+            position: relative; 
+            z-index: 3; 
+            display: flex; 
+            justify-content: center; 
+            gap: 0px; 
+            margin-bottom: 40px; 
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15)); 
+        }
+        .hero-images img {
+            height: 300px; 
+            margin: 0; 
+        }
+        .hero-images img:first-of-type {
+            transform: rotate(-5deg); 
+            z-index: 2; 
+        }
+        .hero-images img:last-of-type {
+            transform: rotate(5deg); 
+            z-index: 2; 
+        }
+
+        .glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%); z-index: 1; }
+
+        /* --- PAGE 2 & 3: PRODUCTS SECTION --- */
+        #products { background: linear-gradient(180deg, #a2d6b3 0%, #a2d6b3 20%, #d2ebfb 100%); padding: 80px 10% 150px; }
+        
+        .product-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 100px; gap: 50px; }
+        .product-row.reverse { flex-direction: row-reverse; }
+        .product-text { flex: 1; padding: 20px; }
+        .product-text h2 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; font-style: italic; font-weight: 800; margin-bottom: 20px; }
+        .text-green { color: #2d6a4f; }
+        .text-blue { color: #0077b6; }
+        .product-text p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; text-align: justify; }
+        
+        .product-image-container { 
+            flex: 1; position: relative; display: flex; justify-content: center; align-items: center; border-radius: 40px; 
+            height: 550px; 
+            padding: 50px;
+        }
+        .bg-light-green { background-color: #c8e6c9; }
+        .bg-light-blue { background-color: #bbdefb; }
+        .product-image-container img { max-height: 100%; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2)); }
+
+        /* --- PAGE 4, 5, 6: ABOUT US SECTION --- */
+        #about { background-color: #89c79d; padding: 80px 10%; color: #1a1a1a; }
+        
+        .about-row-1 { display: flex; align-items: center; gap: 50px; margin-bottom: 80px; }
+        .about-row-1 img { width: 45%; border-radius: 0; object-fit: cover;}
+        .about-text-1 h2 { font-family: 'Montserrat', sans-serif; font-size: 3rem; font-style: italic; font-weight: 800; color: #0a1954; margin-bottom: 20px; }
+        .about-text-1 p, .about-col-left p { font-size: 1.2rem; line-height: 1.7; }
+        
+        .about-row-2 { 
+            display: flex; 
+            align-items: center; 
+            gap: 50px; 
+            margin-bottom: 100px; 
+        }
+        .about-col-left { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px; 
+        }
+        .about-col-left img { 
+            width: 100%; 
+            border-radius: 0; 
+            display: block;
+        }
+        .about-col-left p { 
+            width: 100%;
+            text-align: left; 
+            margin: 0; 
+        }
+        
+        .about-col-right { flex: 1; text-align: center; display: flex; justify-content: center; align-items: center;}
+        .about-col-right img { 
+            max-height: 600px; 
+            width: auto; 
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2)); 
+        }
+        
+        .about-vision { text-align: center; max-width: 800px; margin: 0 auto; padding-bottom: 80px; }
+        .about-vision p { font-size: 1.3rem; line-height: 1.8; margin-bottom: 40px; }
+        .about-vision h3 { font-size: 1.6rem; font-weight: 700; line-height: 1.5; }
+
+        /* --- PAGE 7: NEWSLETTER & FOOTER --- */
+        #newsletter { background: linear-gradient(180deg, #89c79d 0%, #c4e4ff 100%); padding: 100px 10% 40px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        #newsletter h2 { font-family: 'Montserrat', sans-serif; font-size: 3.5rem; font-weight: 800; color: #0a1954; letter-spacing: 2px; margin-bottom: 20px; }
+        #newsletter p { font-size: 1.5rem; margin-bottom: 30px; }
+        .newsletter-form { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .newsletter-input { padding: 12px 20px; width: 300px; border-radius: 30px; border: 2px solid #0a1954; font-family: 'Poppins', sans-serif; font-size: 14px; outline: none; }
+        .success-message { display: none; color: #0a1954; font-size: 1.2rem; font-weight: 700; background-color: rgba(255,255,255,0.5); padding: 15px 30px; border-radius: 30px; }
+        
+        footer { width: 100%; margin-top: 80px; }
+        footer hr { border: none; border-top: 3px solid #000; margin-bottom: 30px; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px; }
+        .footer-social, .footer-icons { display: flex; gap: 15px; }
+        .footer-social svg, .footer-icons svg { width: 28px; height: 28px; cursor: pointer; }
+
+        /* --- SLIDE-OUT CART CSS --- */
+        .cart-sidebar {
+            position: fixed; top: 0; right: -450px; width: 400px; max-width: 100%; height: 100vh;
+            background-color: #ffffff; box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+            z-index: 1000; transition: right 0.3s ease; display: flex; flex-direction: column;
+        }
+        .cart-sidebar.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; padding: 30px; border-bottom: 1px solid #eee; }
+        .cart-header h2 { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 1.5rem; color: #0a1954; }
+        .close-btn { background: none; border: none; font-size: 2rem; cursor: pointer; color: #999; }
+        .close-btn:hover { color: #e55a8f; }
+        
+        .cart-items-container { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px; }
+        .item-details h4 { font-size: 1rem; margin-bottom: 5px; color: #1a1a1a; }
+        .item-details p { font-size: 0.9rem; color: #666; }
+        .item-price { font-weight: 700; color: #e55a8f; }
+        
+        .cart-footer { padding: 30px; border-top: 1px solid #eee; background-color: #f9f9f9; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+        .btn-checkout { width: 100%; text-align: center; }
+        
+        /* Dark overlay for Cart & Account */
+        .ui-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0,0,0,0.5); z-index: 999;
+            display: none; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .ui-overlay.active { display: block; opacity: 1; }
+
+        /* --- ACCOUNT MODAL CSS --- */
+        .account-modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -40%);
+            width: 90%; max-width: 500px; background-color: #ffffff;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000; display: none; opacity: 0; transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .account-modal.open { display: block; opacity: 1; transform: translate(-50%, -50%); }
+        .account-header { padding: 25px 30px; background-color: #f1e4ce; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;}
+        .account-header h2 { font-family: 'Montserrat', sans-serif; color: #0a1954; font-weight: 700; }
+        .account-body { padding: 30px; max-height: 60vh; overflow-y: auto; }
+        .profile-info { margin-bottom: 30px; }
+        .profile-info p { margin-bottom: 10px; font-size: 1rem; }
+        .profile-info span { font-weight: 600; color: #0a1954; }
+        
+        .order-history h3 { font-family: 'Montserrat', sans-serif; font-size: 1.2rem; color: #e55a8f; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .order-card { background-color: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #eee; }
+        .order-card-header { display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 10px; color: #333; }
+        .order-card-items { font-size: 0.85rem; color: #666; }
+
+        /* --- MOBILE RESPONSIVENESS (PHONES) --- */
+        @media screen and (max-width: 768px) {
+            
+            /* FIX: Allow Navigation to wrap and stack the links underneath */
+            nav { 
+                padding: 15px 5%; 
+                flex-wrap: wrap; 
+            }
+            .nav-brand { 
+                font-size: 20px; 
+                position: static; 
+                transform: none; 
+                order: 1; 
+            }
+            .nav-icons { 
+                order: 2; 
+            }
+            .nav-icons svg { width: 20px; height: 20px; }
+            
+            /* FIX: Show the links on mobile and center them in a new row below the logo */
+            .nav-links { 
+                display: flex; 
+                width: 100%; 
+                justify-content: center; 
+                gap: 20px; 
+                margin-top: 15px; 
+                order: 3; 
+                font-size: 12px; 
+            }
+
+            /* Increased padding so the stacked header doesn't cover the title */
+            #hero { padding-top: 150px; justify-content: flex-start; }
+            .hero-title { font-size: 3.5rem; margin-bottom: 20px; }
+            .hero-images img { height: 200px; } 
+            .glow { width: 300px; height: 300px; }
+
+            .product-row, .product-row.reverse { flex-direction: column; text-align: center; gap: 30px; margin-bottom: 60px; }
+            .product-image-container { height: 350px; padding: 30px; border-radius: 20px; width: 100%;}
+            #products { padding: 50px 5% 80px; }
+
+            #about { padding: 50px 5%; }
+            .about-row-1 { flex-direction: column; gap: 30px; text-align: center; margin-bottom: 60px; }
+            .about-row-1 img { width: 100%; border-radius: 20px; }
+            .about-text-1 h2 { font-size: 2.2rem; }
+            
+            .about-row-2 { flex-direction: column-reverse; gap: 30px; margin-bottom: 60px; }
+            .about-col-left { align-items: center; } 
+            .about-col-left p { text-align: center; }
+            .about-col-right img { max-height: 400px; max-width: 100%; object-fit: contain;}
+
+            .about-vision p { font-size: 1.1rem; }
+            .about-vision h3 { font-size: 1.3rem; }
+
+            #newsletter { padding: 60px 5% 30px; }
+            #newsletter h2 { font-size: 2.5rem; }
+            #newsletter p { font-size: 1.1rem; }
+            
+            .footer-content { flex-direction: column; text-align: center; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="#about">ABOUT</a>
+            <a href="#products">SEE PRODUCTS</a>
+        </div>
+        <div class="nav-brand">Motion Ease Co.</div>
+        <div class="nav-icons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" onclick="openAccount()"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            
+            <div class="cart-container" onclick="openCart()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                <span class="cart-badge" id="cart-count">0</span>
+            </div>
+            
+            <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="glow"></div>
+        <h1 class="hero-title">READY, SET, GLIDE</h1>
+        <div class="hero-images">
+            <img src="blue-Balm.png" alt="Cozy Glide Blue">
+            <img src="green-balm.png" alt="Cozy Glide Green">
+        </div>
+        <a href="#products"><button class="btn-yellow" style="position: relative; z-index: 5;">BUY NOW</button></a>
+    </section>
+
+    <section id="products">
+        <div class="product-row">
+            <div class="product-text">
+                <h2 class="text-green">Original</h2>
+                <p>Worry no more about chafing! Cozy Glide Original is an anti-chafing balm that provides comfort and protection against skin irritations caused by friction. Lightweight, non-greasy, sweat resistant, and skin loving—ensures moisturization that is gentle on the skin. Comes in a compact and easy-to-use twist-up packaging for hassle-free application anytime, anywhere.</p>
+                <button class="btn-yellow" onclick="addToCart('Cozy Glide Original', 150.00)">ADD TO CART</button>
+            </div>
+            <div class="product-image-container bg-light-green">
+                <img src="Original-Balm.png" alt="Original Balm">
+            </div>
+        </div>
+
+        <div class="product-row reverse">
+            <div class="product-text">
+                <h2 class="text-blue">Cooling</h2>
+                <p>Beat the heat with the Cozy Glide Cooling variant! An anti-chafing balm that provides comfort and protection against skin irritations caused by friction. Lightweight, non-greasy, sweat resistant, and skin loving—ensures moisturization that is gentle on the skin. Comes in a compact and easy to use twist-up packaging for hassle-free application anytime, anywhere.</p>
+                <button class="btn-yellow" onclick="addToCart('Cozy Glide Cooling', 170.00)">ADD TO CART</button>
+            </div>
+            <div class="product-image-container bg-light-blue">
+                <img src="Cooling.png" alt="Cooling Balm">
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="about-row-1">
+            <img src="Body-Inclusivity.png" alt="Body Inclusivity">
+            <div class="about-text-1">
+                <h2>About Us</h2>
+                <p>The MotionEase Co. was established with body inclusivity as one of its advocacies. When looking for gaps in the market, the founders discovered a particular problem that members of the plus-size community frequently face, yet is not properly addressed—skin chafing.</p>
+            </div>
+        </div>
+
+        <div class="about-row-2">
+            <div class="about-col-left">
+                <img src="About-US-2.png" alt="Comfort">
+                <p>This small and seemingly trivial problem may lead to greater concerns, and even interrupt our daily routine. As a solution for this, the Cozy Glide was created.</p>
+            </div>
+            <div class="about-col-right">
+                <img src="Splash-Image.png" alt="Cozy Glide Splash">
+            </div>
+        </div>
+
+        <div class="about-vision">
+            <p>A balm that is compact, convenient to use, and provides instant comfort and protection for those who experience chafing, rashes, and skin irritations due to constant movement. A product that reflects the values of a brand that supports individuals who are always active and on-the-go.</p>
+            
+            <h3>At Motion Ease Co., we envision a world where comfort is accessible to all, enabling active lifestyles through promoting inclusivity, self-confidence, and ease in every step.</h3>
+        </div>
+    </section>
+
+    <section id="newsletter">
+        <h2>STAY UPDATED</h2>
+        <p>Sign up to our Newsletter today!</p>
+        
+        <div class="newsletter-form" id="signup-form">
+            <input type="email" id="email-input" class="newsletter-input" placeholder="Enter your email address..." required>
+            <button class="btn-yellow" onclick="handleSignUp()">SIGN UP</button>
+        </div>
+        
+        <div id="success-message" class="success-message">
+            Thank you for signing up! We'll keep you updated.
+        </div>
+
+        <footer>
+            <hr>
+            <div class="footer-content">
+                <div class="footer-social">
+                    <svg viewBox="0 0 24 24" fill="black" stroke="none"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </div>
+                
+                <div>2026 MOTIONEASECO.COM</div>
+                
+                <div class="footer-icons">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" onclick="window.scrollTo(0,0)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" onclick="openCart()"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+    <div class="ui-overlay" id="ui-overlay" onclick="closeAllModals()"></div>
+
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-btn" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="cart-items-container" id="cart-items-container">
+            <p style="color: #999; text-align: center; margin-top: 20px;">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">₱0.00</span>
+            </div>
+            <button class="btn-yellow btn-checkout" onclick="checkout()">CHECKOUT</button>
+        </div>
+    </div>
+
+    <div class="account-modal" id="account-modal">
+        <div class="account-header">
+            <h2>My Account</h2>
+            <button class="close-btn" onclick="closeAllModals()">&times;</button>
+        </div>
+        <div class="account-body">
+            <div class="profile-info">
+                <p><span>Name:</span> <span id="display-name">Guest User</span></p>
+                <p><span>Email:</span> <span id="display-email">Not provided</span></p>
+                <p><span>Status:</span> <span id="display-status" style="color: #666;">Not Subscribed</span></p>
+            </div>
+            
+            <div class="order-history">
+                <h3>Order History</h3>
+                <div id="order-history-container">
+                    <p style="color: #999; font-size: 0.9rem;">No past orders yet. Make a purchase to see it here!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = {}; 
+        let orderHistory = []; 
+        
+        function closeAllModals() {
+            document.getElementById('cart-sidebar').classList.remove('open');
+            document.getElementById('account-modal').classList.remove('open');
+            document.getElementById('ui-overlay').classList.remove('active');
+        }
+
+        function openCart() {
+            closeAllModals(); 
+            document.getElementById('cart-sidebar').classList.add('open');
+            document.getElementById('ui-overlay').classList.add('active');
+        }
+
+        function openAccount() {
+            closeAllModals(); 
+            document.getElementById('account-modal').classList.add('open');
+            document.getElementById('ui-overlay').classList.add('active');
+        }
+
+        function addToCart(productName, price) {
+            if (cart[productName]) {
+                cart[productName].quantity += 1;
+            } else {
+                cart[productName] = { price: price, quantity: 1 };
+            }
+            updateCartUI(); 
+            openCart(); 
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const totalElement = document.getElementById('cart-total-price');
+            const badge = document.getElementById('cart-count');
+            
+            container.innerHTML = ''; 
+            let totalItems = 0;
+            let totalPrice = 0;
+
+            for (const [name, data] of Object.entries(cart)) {
+                totalItems += data.quantity;
+                totalPrice += (data.price * data.quantity);
+                
+                const itemHTML = `
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <h4>${name}</h4>
+                            <p>Qty: ${data.quantity}</p>
+                        </div>
+                        <div class="item-price">₱${(data.price * data.quantity).toFixed(2)}</div>
+                    </div>
+                `;
+                container.innerHTML += itemHTML;
+            }
+
+            totalElement.innerText = "₱" + totalPrice.toFixed(2);
+            badge.innerText = totalItems;
+            
+            if (totalItems > 0) {
+                badge.style.display = 'inline-block';
+            } else {
+                container.innerHTML = '<p style="color: #999; text-align: center; margin-top: 20px;">Your cart is currently empty.</p>';
+            }
+        }
+
+        function checkout() {
+            if (Object.keys(cart).length === 0) {
+                alert("Your cart is empty!");
+            } else {
+                let orderTotal = 0;
+                let itemsString = "";
+                for (const [name, data] of Object.entries(cart)) {
+                    orderTotal += (data.price * data.quantity);
+                    itemsString += `${data.quantity}x ${name}<br>`;
+                }
+
+                const today = new Date().toLocaleDateString();
+                orderHistory.unshift({ 
+                    date: today,
+                    total: orderTotal.toFixed(2),
+                    items: itemsString
+                });
+
+                alert("Checkout successful! Your items are on the way.");
+                cart = {};
+                updateCartUI();
+                updateAccountUI(); 
+                openAccount(); 
+            }
+        }
+
+        function updateAccountUI() {
+            const container = document.getElementById('order-history-container');
+            
+            if (orderHistory.length === 0) {
+                container.innerHTML = '<p style="color: #999; font-size: 0.9rem;">No past orders yet. Make a purchase to see it here!</p>';
+                return;
+            }
+
+            container.innerHTML = ''; 
+            
+            orderHistory.forEach(order => {
+                const orderHTML = `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>Order Placed: ${order.date}</span>
+                            <span>₱${order.total}</span>
+                        </div>
+                        <div class="order-card-items">
+                            ${order.items}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += orderHTML;
+            });
+        }
+
+        function handleSignUp() {
+            const emailInput = document.getElementById('email-input');
+            const form = document.getElementById('signup-form');
+            const successMsg = document.getElementById('success-message');
+            
+            if(emailInput.value.includes('@') && emailInput.value.includes('.')) {
+                
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+
+                document.getElementById('display-email').innerText = emailInput.value;
+                document.getElementById('display-name').innerText = "New Subscriber";
+                document.getElementById('display-status').innerText = "Active Member";
+                document.getElementById('display-status').style.color = "#0a1954";
+
+                openAccount(); 
+
+            } else {
+                alert("Please enter a valid email address.");
+            }
+        }
+    </script>
+
+</body>
+</html>
